@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy Assignment</title>
+
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+  <!-- link to reset -->
+  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+
+  <!-- link to bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  
+</head>
+
+<body>
+  <div class="container">
+
+  <header>
+    <div class="col-sm-12 text-center">
+    <h1>Look up your favorite animal!</h1>
+  </header>
+
+    <!--This is where the buttons are-->
+  <div class="row">
+    <div id="buttonsView">
+      <button data-animal="puppy">
+        pupper
+      </button>
+    
+      <button data-animal="dog">
+        doggo
+      </button>
+
+      <button data-animal="cat">
+        catto
+      </button>
+    
+      <button data-animal="kitten">
+        kitteh
+      </button>
+    </div>
+  </div>
+
+
+  <div class="row">
+
+    <!--This is where the gifs appear-->
+    <div class="col-sm-8 text-center">
+        <div id="gifs-appear-here">
+        </div>
+    </div>    
+
+    <!--This is where form for the buttons appear-->
+    <div class="col-sm-4 text-center">
+      <div id="addButton">
+        <form id="gifForm">
+          <label for="gifInput">Pick your animal here!</label>
+          <input type="text" id="gifInput">
+        
+    <!--This is where the addGif button appears-->
+          <input id="addGif" type="submit" value="Add your animals!"> 
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+  <!-- link to JS file -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script type="text/javascript" src="assets/javascript/app.js"></script>
+  
+</body>
+
+
+</html>
