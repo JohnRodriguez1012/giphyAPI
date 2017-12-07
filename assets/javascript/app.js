@@ -1,85 +1,122 @@
 //Globally defined variable
 
-var animals = ["puppy", "dog", "cat", "kitten"];
+var animals = ["puppy", "dog", "cat", "kitten","walrus", "elephant"];
 
-/*This was from the button activity where we added a button buy just adding to html. 
-*/
+$(document).ready(function() {
 
-
-$("button").on("click", function() {
-  var animal = $(this).attr("data-animal");
-  var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=7hr69g7olKv0dv9Tnz7RTHzvd6ol8tI2&q=" +
-        animal + "&limit=25&offset=0&rating=PG&lang=en";
-
-      $.ajax({
-          url: queryURL,
-          method: "GET"
-        })
-        .done(function(response) {
-          var results = response.data;
-
-          for (var i = 0; i < results.length; i++) {
-            var gifDiv = $("<div>");
-
-            var rating = results[i].rating;
-
-            var p = $("<p>").text("Rating: " + results[i].rating);
-
-            var gifImage = $("<img>");
-            gifImage.attr("src", results[i].images.fixed_height.url);
-
-            gifDiv.prepend(p);
-            gifDiv.prepend(gifImage);
-
-            $("#gifs-appear-here").prepend(gifDiv);
-          }
-        });
-    });
+$("#addGif").on("click", clickEventHandler);
 
 
-/*      // displayMovieInfo function re-renders the HTML to display the appropriate content
-      function displayMovieInfo() {
+//shows the animals already in the array
+function showCurrentButtons() {
+  $("#buttonsView").empty();
 
-        var movie = $(this).attr("data-name");
-        var queryURL = "https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+  for (var i = 0; i < animals.length; i++){
+    var gifButton = $("<button>");
+    gifButton.addClass("animal");
+    gifButton.addClass("btn btn-primary");
+    gifButton.attr("data-animal", animals[i]);
+    gifButton.text(animals[i]);
+    gifButton.on("click", animalButtonClick);
+    $("#buttonsView").append(gifButton);
 
-        // Creates AJAX call for the specific movie button being clicked
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-        }).done(function(response) {
+  }
+}
 
-        });
-
-      }*/
-
+//actually adds the button to the div
 
 function renderButtons() {
 
-// Deletes the deletes animal prior to adding and stops repeat buttons)
   $("#buttonsView").empty();
         // Loops through the array
     for (var i = 0; i < animals.length; i++) {
       var a =$("<button>");
-      a.attr("data-animal", animals[i])
-      a.text(animals[i])
+      a.attr("data-animal", animals[i]);
+      a.text(animals[i]);
+      a.on("click", animalButtonClick);
       $("#buttonsView").append(a);
     }
  
   console.log(animals);
 }
 
-      
 // This function handles events where the add movie button is clicked
 
-
-$("#addGif").on("click", function(event) {
+ function clickEventHandler(event) {
   event.preventDefault();
-    // This line of code will grab the input from the textbox
-    var animal = $("#gifInput").val().trim();
-      animals.push(animal);
-        renderButtons();
-     });
+  // This line of code will grab the input from the textbox
+  var animal = $("#gifInput").val().trim();
+    
+  if(animal === ""){
+    return false; //stops blank buttons
+  }
 
-/*giphy API Key:7hr69g7olKv0dv9Tnz7RTHzvd6ol8tI2 */
+  animals.push(animal);
+
+  renderButtons();
+};
+
+function playOrStop(event) {
+  var state = $(this).attr("data-state");
+
+  if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+  } else {
+    $(this).attr("src", $(this).attr("data-still"));
+  }
+};
+
+//Connects to the API to display gifs
+//$(window).on('click', 'button', function)
+function animalButtonClick (event){
+
+  var animal = $(this).attr("data-animal");
+  var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=7hr69g7olKv0dv9Tnz7RTHzvd6ol8tI2&q=" +animal + "&limit=25&offset=0&rating=PG&lang=en";
+console.log(queryURL);
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        .done(function(response) {
+        console.log(response)
+          $("#gifs-appear-here").empty();
+
+          var results = response.data;
+          if (results == ""){
+            alert("Sorry, no gifs for this button!");
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div>");
+            gifDiv.addClass("gifDiv")
+
+            var rating = results[i].rating;
+
+            var p = $("<p>").text("Rating: " + results[i].rating);
+              gifDiv.append(rating);
+
+            var gifImage = $("<img>");
+            gifImage.attr("src", results[i].images.fixed_height_small_still.url); // still image stored into src of image
+            gifImage.attr("data-still",results[i].images.fixed_height_small_still.url); // still image
+            gifImage.attr("data-animate",results[i].images.fixed_height_small.url); // animated image
+            gifImage.attr("data-state", "still"); // set the image state
+            gifImage.addClass("image");
+            gifImage.on("click", playOrStop);
+            gifDiv.append(gifImage);
+
+            $("#gifs-appear-here").prepend(gifDiv);
+          }
+      });
+  };
+
+showCurrentButtons();
+
+});
+  
+
+
+      
+
+
 
